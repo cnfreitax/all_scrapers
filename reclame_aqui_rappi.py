@@ -3,6 +3,7 @@ import csv
 import time
 from selenium import webdriver
 from time import sleep
+from tqdm import tqdm
 from bs4 import BeautifulSoup as bs
 
 start = time.time()
@@ -14,7 +15,7 @@ alvo = 'empresa/rappi_179520/lista-reclamacoes/?categoria=0000000000000311'
 site_scp = f'{main_url}/{alvo}'
 reclamacao_app = '&categoria=0000000000000311'
 
-page = #qtd paginas
+page = 3056
 
 if not os.path.exists('scrape_rappi_csv'):
     os.makedirs('scrape_rappi_csv')
@@ -37,7 +38,7 @@ bsObj = bs(browser.page_source, 'html.parser')
 with open(f'raclame_aqui_rappi.csv', 'a') as file:
     dw = csv.DictWriter(file, fieldnames=cols, lineterminator='\n')
     dw.writeheader()
-    for i in range(page):
+    for i in tqdm(range(page)):
         i = str(i + 1)
         browser.get(f'https://www.reclameaqui.com.br/empresa/rappi_179520/lista-reclamacoes/?pagina={i}{reclamacao_app}')
         bsObj = bs(browser.page_source, 'html.parser')
@@ -62,4 +63,4 @@ with open(f'raclame_aqui_rappi.csv', 'a') as file:
 end = time.time()
 browser.quit()
 
-print(f'Uma página com 10 reclamações foi raspada em {end - start} segundos.' )
+print(f'Page crawleada em {end - start} segundos.' )
